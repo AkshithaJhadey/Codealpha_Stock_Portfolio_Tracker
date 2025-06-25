@@ -1,0 +1,41 @@
+# Hardcoded stock prices
+stock_prices = {
+    "AAPL": 180,
+    "TSLA": 250,
+    "GOOGL": 2700,
+    "MSFT": 310,
+    "AMZN": 130
+}
+portfolio = {}
+total_investment = 0
+print("Available stocks:", ', '.join(stock_prices.keys()))
+while True:
+    stock = input("Enter stock symbol (or 'done' to finish): ").upper()
+    if stock == "DONE":
+        break
+    if stock not in stock_prices:
+        print("Stock not available. Try again.")
+        continue
+    try:
+        quantity = int(input(f"Enter quantity for {stock}: "))
+    except ValueError:
+        print("Invalid quantity. Try again.")
+        continue
+   portfolio[stock] = portfolio.get(stock, 0) + quantity
+print("\nInvestment Summary:")
+for stock, qty in portfolio.items():
+    value = stock_prices[stock] * qty
+    total_investment += value
+    print(f"{stock}: {qty} x ${stock_prices[stock]} = ${value}")
+print(f"\nTotal Investment Value: ${total_investment}")
+save = input("Do you want to save this to a file? (yes/no): ").lower()
+if save == "yes":
+    filename = input("Enter filename (with .txt or .csv): ")
+    with open(filename, "w") as f:
+        f.write("Stock,Quantity,Price,Total\n")
+        for stock, qty in portfolio.items():
+            price = stock_prices[stock]
+            total = price * qty
+            f.write(f"{stock},{qty},{price},{total}\n")
+        f.write(f"\nTotal Investment Value: ${total_investment}\n")
+    print(f"Data saved to {filename}")
